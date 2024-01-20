@@ -1,9 +1,8 @@
 package clh.comp313.gateway.controllers;
 
 import clh.comp313.gateway.grpc.*;
-import clh.comp313.gateway.lombok.TokenDTO;
-import clh.comp313.gateway.lombok.UserDTO;
-import clh.comp313.gateway.lombok.ValidateResponseDTO;
+import clh.comp313.gateway.dtos.UserDTO;
+import clh.comp313.gateway.dtos.ValidateResponseDTO;
 import clh.comp313.gateway.services.GrpcClientService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;

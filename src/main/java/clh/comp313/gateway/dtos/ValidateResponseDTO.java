@@ -1,4 +1,4 @@
-package clh.comp313.gateway.lombok;
+package clh.comp313.gateway.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

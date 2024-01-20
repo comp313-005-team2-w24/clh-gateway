@@ -30,6 +30,14 @@ dependencies {
     implementation "io.grpc:grpc-protobuf:${grpcVersion}"
     implementation "io.grpc:grpc-stub:${grpcVersion}"
     implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+
+    // tests
+    implementation platform('org.testcontainers:testcontainers-bom:1.19.3') //import bom
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
+    testImplementation "org.testcontainers:testcontainers:1.19.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.19.3"
+
+
 }
 
 protobuf {
