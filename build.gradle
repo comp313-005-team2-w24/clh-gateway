@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '2.6.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'com.google.protobuf' version '0.8.18'
+}
+
+group = 'clh.comp313'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    grpcVersion = '1.58.0'
+    protobufVersion = '3.23.4'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // gRPC dependencies
+    implementation 'com.google.protobuf:protobuf-java-util:3.25.2'
+    implementation "io.grpc:grpc-netty:${grpcVersion}"
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+    implementation "com.google.protobuf:protobuf-java:${protobufVersion}"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+    generateProtoTasks {
+        ofSourceSet('main').forEach {
+            it.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDir "${protobuf.generatedFilesBaseDir}/main/grpc"
+            srcDir "${protobuf.generatedFilesBaseDir}/main/java"
+        }
+    }
+}
+
+task cleanGenerated {
+    doLast {
+        file("${protobuf.generatedFilesBaseDir}/main").deleteDir()
+    }
+}
+
+clean.dependsOn cleanGenerated
