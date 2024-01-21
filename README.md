@@ -1,5 +1,3 @@
-Certainly! Below is a README.md template for your Spring Boot project with gRPC integration, using Testcontainers for testing and Jib for containerization. You can adjust the content to better fit your project's specifics.
-
 # CLH Gateway Service
 
 ## Overview
@@ -38,6 +36,12 @@ You can build the application using either Maven or Gradle. Here's how you can d
 
 ### Running the application
 
+To run the application:
+
+```bash
+./gradlew bootJar
+java -jar build/libs/gateway-0.0.1-SNAPSHOT.jar
+```
 
 The service will start on port 8081, as specified in the Spring Boot configuration.
 
@@ -67,7 +71,7 @@ The service exposes the following endpoints:
 
 - POST `/auth/createUser` - Create a new user.
 - POST `/auth/login` - Authenticate a user and retrieve a token.
-- GET `/auth/validateToken` - Validate a user's authentication token.
+- GET `/auth/validateToken?token={token}` - Validate a user's authentication token.
 
 ## Configuration
 

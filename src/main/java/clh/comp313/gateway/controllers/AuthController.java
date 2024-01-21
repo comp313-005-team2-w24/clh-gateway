@@ -7,6 +7,8 @@ import clh.comp313.gateway.services.GrpcClientService;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.util.JsonFormat;
 import io.grpc.StatusRuntimeException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,6 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
     private final GrpcClientService grpcClientService;
 
     public AuthController(GrpcClientService grpcClientService) {
@@ -37,6 +38,8 @@ public class AuthController {
 
             CreateUserResponse grpcResponse = grpcClientService.authServiceStub().createUser(grpcRequest);
 
+            System.out.println(userDTO.getUsername());
+
             // Serialize the Protobuf object to JSON
             // https://stackoverflow.com/questions/51588778/convert-a-protobuf-to-json-using-jackson
             String jsonResponse = JsonFormat.printer().print(grpcResponse);
@@ -45,10 +48,14 @@ public class AuthController {
                     .body(jsonResponse);
 
         } catch (StatusRuntimeException e) {
+            System.out.println(e.getLocalizedMessage());
+
             return new ResponseEntity<>(
                     Collections.singletonMap("error", e.getStatus().getDescription()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (InvalidProtocolBufferException e) {
+
+            System.out.println(e.getLocalizedMessage());
             return new ResponseEntity<>(
                     Collections.singletonMap("error", e.getLocalizedMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR);
