@@ -1,4 +1,4 @@
-package clh.comp313.gateway.services;
+package clh.comp313.gateway.auth.services;
 
 import clh.comp313.gateway.grpc.AuthServiceGrpc;
 import io.grpc.ManagedChannel;
@@ -6,14 +6,13 @@ import io.grpc.ManagedChannelBuilder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 @Service
-public class GrpcClientService {
+public class AuthGrpcClientService {
 
     private final ManagedChannel channel;
 
-    public GrpcClientService(@Value("${AUTH_SERVICE_ADDRESS:localhost}") String grpcServiceAddress) {
+    public AuthGrpcClientService(@Value("${AUTH_SERVICE_ADDRESS:localhost}") String grpcServiceAddress) {
         this.channel = ManagedChannelBuilder.forAddress(grpcServiceAddress, 8080)
                 .usePlaintext()
                 .build();
