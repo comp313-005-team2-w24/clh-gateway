@@ -48,7 +48,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
         try {
-            LoginRequest grpcRequest = LoginRequest.newBuilder().setUsername(userDTO.getUsername()).setPassword(userDTO.getPassword()).setEmail(userDTO.getEmail()).build();
+            LoginRequest grpcRequest = LoginRequest.newBuilder()
+                    .setUsername("")
+                    .setPassword(userDTO.getPassword())
+                    .setEmail(userDTO.getEmail())
+                    .build();
 
             LoginResponse grpcResponse = authGrpcClientService.authServiceStub().login(grpcRequest);
 
