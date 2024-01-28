@@ -34,8 +34,12 @@ jobs:
         run: ./gradlew test
       - name: Run tests
         run: ./gradlew build
-      - name: Deploy to Docker Hub using Jib
-        run: ./gradlew jib
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: JIB container build and publish
+        uses: MathieuSoysal/jib-container-publish.yml@v2.1.5
+        with:
+          REGISTRY: docker.io  # Set to Docker Hub
+          IMAGE_NAME: <your-dockerhub-username>/<your-image-name>  # Replace with your Docker Hub username and the desired image name
+          tag-name: ${{ github.event.release.tag_name }}
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}  # Docker Hub username
+          PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}  # Docker Hub access token
+          java-version: 17  # Set the Java version you need
