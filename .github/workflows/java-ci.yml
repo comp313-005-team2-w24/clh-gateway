@@ -34,3 +34,8 @@ jobs:
         run: ./gradlew test
       - name: Run tests
         run: ./gradlew build
+      - name: Deploy to Docker Hub using Jib
+        run: ./gradlew jib
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
