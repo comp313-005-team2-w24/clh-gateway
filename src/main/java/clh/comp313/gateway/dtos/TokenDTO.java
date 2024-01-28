@@ -1,4 +1,4 @@
-package clh.comp313.gateway.auth.dtos;
+package clh.comp313.gateway.dtos;
 
 import lombok.Data;
 

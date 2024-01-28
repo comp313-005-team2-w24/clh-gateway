@@ -67,14 +67,11 @@ Make sure Docker is running on your machine as Testcontainers requires it to lau
 
 ## API Endpoints
 
-## Auth
+The service exposes the following endpoints:
+
 - POST `/auth/createUser` - Create a new user.
 - POST `/auth/login` - Authenticate a user and retrieve a token.
 - GET `/auth/validateToken?token={token}` - Validate a user's authentication token.
-
-## Author
-- POST `/authors/` - Create a new author.
-- GET `/authors/` - Get all authors.
 
 ## Configuration
 
