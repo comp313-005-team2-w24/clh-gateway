@@ -2,19 +2,16 @@ package clh.comp313.gateway.bookstore.author.controllers;
 
 import clh.comp313.gateway.bookstore.author.dtos.AuthorDTO;
 import clh.comp313.gateway.bookstore.author.services.AuthorGrpcClientService;
-import com.google.protobuf.InvalidProtocolBufferException;
-import io.clh.bookstore.author.CreateAuthorRequest;
+import com.google.protobuf.util.JsonFormat;
+import io.clh.bookstore.author.AuthorEntity;
 import io.clh.bookstore.author.CreateAuthorResponse;
 import io.clh.bookstore.author.GetAllAuthorsResponse;
-import io.grpc.StatusRuntimeException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.google.protobuf.util.JsonFormat;
-import org.springframework.http.MediaType;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,5 +52,13 @@ public class AuthorController {
         }
 
         return ResponseEntity.ok(authorList);
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getAuthorById(@PathVariable Long id) {
+        AuthorEntity authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
+        AuthorDTO authorDto = new AuthorDTO((int) authorById.getAuthorId(), authorById.getName().toCharArray(), authorById.getBiography());
+
+        return ResponseEntity.ok(authorDto);
     }
 }

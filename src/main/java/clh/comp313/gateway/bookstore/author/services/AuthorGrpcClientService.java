@@ -37,4 +37,12 @@ public class AuthorGrpcClientService {
 
         return responseList;
     }
+
+
+    public AuthorEntity getAuthorById(Integer id){
+        AuthorByIdRequest author_id = AuthorByIdRequest
+                .newBuilder().setAuthorId(id).build();
+
+        return blockingStub.getAuthorById(author_id);
+    }
 }
