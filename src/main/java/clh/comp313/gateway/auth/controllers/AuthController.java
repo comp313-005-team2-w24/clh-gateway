@@ -1,12 +1,10 @@
 package clh.comp313.gateway.auth.controllers;
 
-import clh.comp313.gateway.grpc.*;
 import clh.comp313.gateway.auth.dtos.UserDTO;
 import clh.comp313.gateway.auth.dtos.ValidateResponseDTO;
 import clh.comp313.gateway.auth.services.AuthGrpcClientService;
-import com.google.protobuf.InvalidProtocolBufferException;
+import clh.comp313.gateway.grpc.*;
 import com.google.protobuf.util.JsonFormat;
-import io.grpc.StatusRuntimeException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

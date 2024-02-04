@@ -5,14 +5,21 @@ option java_package = "io.clh.bookstore.author";
 
 service AuthorService {
   rpc CreateAuthor(CreateAuthorRequest) returns (CreateAuthorResponse);
-  rpc GetAllAuthors(GetAllAuthorsRequest) returns (stream GetAllAuthorsResponse);
+  rpc GetAllAuthors(GetAllAuthorsRequest) returns (stream AuthorEntity);
   rpc GetAuthorById(AuthorByIdRequest) returns (AuthorEntity);
+  rpc SetAuthorAvatarUrlById(AuthorAvatarUrlRequest) returns (AuthorEntity);
+}
+
+message AuthorAvatarUrlRequest{
+  int64 author_id = 1;
+  string avatar_url = 2;
 }
 
 message AuthorEntity {
   int64 author_id = 1;
   string name = 2;
   string biography = 3;
+  string avatar_url = 4;
 }
 
 message AuthorByIdRequest{
@@ -31,10 +38,4 @@ message CreateAuthorResponse {
 }
 
 message GetAllAuthorsRequest {
-}
-
-message GetAllAuthorsResponse {
-  int64 author_id = 1;
-  string name = 2;
-  string biography = 3;
 }

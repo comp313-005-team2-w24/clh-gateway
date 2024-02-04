@@ -27,12 +27,11 @@ public class AuthorGrpcClientService {
         return blockingStub.createAuthor(request);
     }
 
-    public Iterable<GetAllAuthorsResponse> getAllAuthors() {
+    public Iterable<AuthorEntity> getAllAuthors() {
         GetAllAuthorsRequest request = GetAllAuthorsRequest.newBuilder().build();
-        Iterator<GetAllAuthorsResponse> responseIterator = blockingStub.getAllAuthors(request);
+        Iterator<AuthorEntity> responseIterator = blockingStub.getAllAuthors(request);
 
-        // Convert the Iterator to a List (or another Iterable)
-        List<GetAllAuthorsResponse> responseList = new ArrayList<>();
+        List<AuthorEntity> responseList = new ArrayList<>();
         responseIterator.forEachRemaining(responseList::add);
 
         return responseList;
@@ -44,5 +43,10 @@ public class AuthorGrpcClientService {
                 .newBuilder().setAuthorId(id).build();
 
         return blockingStub.getAuthorById(author_id);
+    }
+
+    public AuthorEntity setAuthorAvatarUrlById(Long id, String avatar_url) {
+        AuthorAvatarUrlRequest request = AuthorAvatarUrlRequest.newBuilder().setAuthorId(id).setAvatarUrl(avatar_url).build();
+        return blockingStub.setAuthorAvatarUrlById(request);
     }
 }
