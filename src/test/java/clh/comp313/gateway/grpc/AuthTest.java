@@ -77,7 +77,7 @@ public class AuthTest {
     @Test
     @Order(2)
     public void testLoginNegative() {
-        LoginRequest request = LoginRequest.newBuilder().setUsername("newexampleuser").setPassword("wrongpassword").setEmail("email@domain.com").build();
+        LoginRequest request = LoginRequest.newBuilder().setPassword("wrongpassword").setEmail("email@domain.com").build();
 
         Executable loginExecutable = () -> authServiceStub.login(request);
         StatusRuntimeException exception = assertThrows(StatusRuntimeException.class, loginExecutable);
@@ -99,7 +99,7 @@ public class AuthTest {
 //    }
 
     private String obtainToken() {
-        LoginRequest loginRequest = LoginRequest.newBuilder().setUsername("testuser1").setPassword("mygreatpassword").setEmail("test@example.com").build();
+        LoginRequest loginRequest = LoginRequest.newBuilder().setPassword("mygreatpassword").setEmail("test@example.com").build();
 
         LoginResponse loginResponse = authServiceStub.login(loginRequest);
         return loginResponse.getToken();
