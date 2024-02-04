@@ -12,4 +12,5 @@ public class AuthorDTO {
     private int author_id;
     private char[] name;
     private String biography;
+    private String avatar_url;
 }
