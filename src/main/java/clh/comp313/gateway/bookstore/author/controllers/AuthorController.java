@@ -62,7 +62,7 @@ public class AuthorController {
     }
 
 
-    @PutMapping("/author/{id}/avatar")
+    @PutMapping("/{id}/avatar")
     public ResponseEntity<AuthorDTO> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
         try {
             AuthorEntity updatedAuthor = authorGrpcClientService.setAuthorAvatarUrlById(id, avatarUrl);
