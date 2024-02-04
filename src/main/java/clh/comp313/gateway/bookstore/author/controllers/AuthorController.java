@@ -26,12 +26,14 @@ public class AuthorController {
     @PostMapping
     public ResponseEntity<?> createAuthor(@RequestBody AuthorDTO authorDto) {
         try {
-            CreateAuthorResponse grpcResponse = authorGrpcClientService.createAuthor(new String(authorDto.getName()), authorDto.getBiography());
+            CreateAuthorResponse grpcResponse = authorGrpcClientService.createAuthor(
+                    new String(authorDto.getName()),
+                    authorDto.getBiography(),
+                    authorDto.getAvatar_url()
+            );
 
             String jsonResponse = JsonFormat.printer().print(grpcResponse);
-
             return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonResponse);
-
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
 

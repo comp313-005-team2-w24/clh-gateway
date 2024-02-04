@@ -22,8 +22,8 @@ public class AuthorGrpcClientService {
         blockingStub = AuthorServiceGrpc.newBlockingStub(channel);
     }
 
-    public CreateAuthorResponse createAuthor(String name, String biography) {
-        CreateAuthorRequest request = CreateAuthorRequest.newBuilder().setName(name).setBiography(biography).build();
+    public CreateAuthorResponse createAuthor(String name, String biography, String avatar_url) {
+        CreateAuthorRequest request = CreateAuthorRequest.newBuilder().setName(name).setBiography(biography).setAvatarUrl(avatar_url).build();
         return blockingStub.createAuthor(request);
     }
 
