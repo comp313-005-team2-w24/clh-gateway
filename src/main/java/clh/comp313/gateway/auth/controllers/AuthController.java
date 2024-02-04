@@ -49,7 +49,6 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody UserDTO userDTO) {
         try {
             LoginRequest grpcRequest = LoginRequest.newBuilder()
-                    .setUsername("")
                     .setPassword(userDTO.getPassword())
                     .setEmail(userDTO.getEmail())
                     .build();
