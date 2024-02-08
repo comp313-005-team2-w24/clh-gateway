@@ -5,12 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 @RequiredArgsConstructor()
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Data
-public class AuthorDTO {
-    private int author_id;
-    private char[] name;
-    private String biography;
-    private String avatar_url;
+public class GetAuthorByIdResponseRest {
+    private AuthorDtO author;
+    private List<BookDto> books;
 }

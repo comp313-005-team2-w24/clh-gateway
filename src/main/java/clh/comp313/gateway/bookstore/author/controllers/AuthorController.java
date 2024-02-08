@@ -1,10 +1,13 @@
 package clh.comp313.gateway.bookstore.author.controllers;
 
-import clh.comp313.gateway.bookstore.author.dtos.AuthorDTO;
+import clh.comp313.gateway.bookstore.author.dtos.AuthorDtO;
+import clh.comp313.gateway.bookstore.author.dtos.BookDto;
+import clh.comp313.gateway.bookstore.author.dtos.GetAuthorByIdResponseRest;
 import clh.comp313.gateway.bookstore.author.services.AuthorGrpcClientService;
 import com.google.protobuf.util.JsonFormat;
 import io.clh.bookstore.author.AuthorEntity;
-import io.clh.bookstore.author.CreateAuthorResponse;
+import io.clh.bookstore.author.Book;
+import io.clh.bookstore.author.GetAuthorByIdResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +27,9 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAuthor(@RequestBody AuthorDTO authorDto) {
+    public ResponseEntity<?> createAuthor(@RequestBody AuthorDtO authorDto) {
         try {
-            CreateAuthorResponse grpcResponse = authorGrpcClientService.createAuthor(
+            AuthorEntity grpcResponse = authorGrpcClientService.createAuthor(
                     new String(authorDto.getName()),
                     authorDto.getBiography(),
                     authorDto.getAvatar_url()
@@ -43,12 +46,12 @@ public class AuthorController {
 
 
     @GetMapping
-    public ResponseEntity<List<AuthorDTO>> getAllAuthors() {
+    public ResponseEntity<List<AuthorDtO>> getAllAuthors() {
         Iterable<AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors();
 
-        List<AuthorDTO> authorList = new ArrayList<>();
+        List<AuthorDtO> authorList = new ArrayList<>();
         for (AuthorEntity resp : allAuthors) {
-            AuthorDTO authorDto = new AuthorDTO((int) resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
+            AuthorDtO authorDto = new AuthorDtO((int) resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
             authorList.add(authorDto);
         }
 
@@ -57,18 +60,33 @@ public class AuthorController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getAuthorById(@PathVariable Long id) {
-        AuthorEntity authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
-        AuthorDTO authorDto = new AuthorDTO((int) authorById.getAuthorId(), authorById.getName().toCharArray(), authorById.getBiography(), authorById.getAvatarUrl());
+        GetAuthorByIdResponse authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
 
-        return ResponseEntity.ok(authorDto);
+        //gRPC
+        AuthorEntity author = authorById.getAuthor();
+        List<Book> booksList = authorById.getBooksList();
+
+        //GetAuthorByIdResponse imp
+        GetAuthorByIdResponseRest response = new GetAuthorByIdResponseRest();
+
+        AuthorDtO authorDto = new AuthorDtO((int)
+                author.getAuthorId(),
+                author.getName().toCharArray(),
+                author.getBiography(),
+                author.getAvatarUrl());
+        List<BookDto> bookDtoList = authorById.getBooksList().stream().map(BookDto::of).toList();
+
+        response.setAuthorDTO(authorDto);
+        response.setBooks(bookDtoList);
+        return ResponseEntity.ok(response);
     }
 
 
     @PutMapping("/{id}/avatar")
-    public ResponseEntity<AuthorDTO> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
+    public ResponseEntity<AuthorDtO> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
         try {
             AuthorEntity updatedAuthor = authorGrpcClientService.setAuthorAvatarUrlById(id, avatarUrl);
-            AuthorDTO authorDto = new AuthorDTO((int) updatedAuthor.getAuthorId(), updatedAuthor.getName().toCharArray(), updatedAuthor.getBiography(), updatedAuthor.getAvatarUrl());
+            AuthorDtO authorDto = new AuthorDtO((int) updatedAuthor.getAuthorId(), updatedAuthor.getName().toCharArray(), updatedAuthor.getBiography(), updatedAuthor.getAvatarUrl());
 
             return ResponseEntity.ok(authorDto);
         } catch (Exception e) {
