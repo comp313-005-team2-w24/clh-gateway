@@ -65,20 +65,78 @@ The project uses Testcontainers for integration testing. To run tests:
 
 Make sure Docker is running on your machine as Testcontainers requires it to launch containers for testing.
 
-## API Endpoints
+# Bookstore API Endpoints
 
 ## Auth
-- POST `/auth/createUser` - Create a new user.
-- POST `/auth/login` - Authenticate a user and retrieve a token.
-- GET `/auth/validateToken?token={token}` - Validate a user's authentication token.
+
+- `POST /auth/createUser` - Create a new user. This endpoint allows for the creation of a new user account in the system. It typically requires user details such as username, password, and email.
+
+- `POST /auth/login` - Authenticate a user and retrieve a token. This endpoint authenticates a user's credentials and returns a token for accessing protected routes.
+
+- `GET /auth/validateToken?token={token}` - Validate a user's authentication token. This endpoint checks if the provided authentication token is valid and active.
 
 ## Author
-- POST `/authors/` - Create a new author.
-- GET `/authors/` - Get all authors.
+
+- `POST /authors/` - Create a new author. This endpoint is used to add a new author to the bookstore system. It requires details of the author, such as name, biography, and avatar URL, in the request body.
+
+- `GET /authors/` - Get all authors. This endpoint retrieves a list of all authors currently available in the bookstore system. It returns basic information about each author, including their ID, name, biography, and avatar URL.
+
+- `GET /authors/id/{id}` - Get an author by ID. This endpoint retrieves detailed information about a specific author, identified by their unique ID. It includes the author's details along with a list of books associated with them.
+
+- `PUT /authors/{id}/avatar` - Update an author's avatar URL by ID. This endpoint allows for updating the avatar URL of an existing author, identified by their unique ID. It requires the new avatar URL as a request parameter.
+
+These endpoints provide a RESTful interface for managing users and authors within the bookstore system. Ensure proper authentication and authorization mechanisms are implemented to protect sensitive endpoints and data.
+
+### Create Author
+To create a new author, send a `POST` request to `/authors/` with a JSON body containing the author's details. Here is an example of the JSON request body:
+
+```json
+{
+  "name": "John Doe",
+  "biography": "John Doe is an acclaimed author known for his contributions to modern literature. He has won numerous awards for his work.",
+  "avatar_url": "http://example.com/avatar/johndoe.jpg"
+}
+```
+
+### Create Book
+To add a new book to the system, send a POST request to /books/ with a JSON body detailing the book's information, including its title, description, ISBN, publication date, price, stock quantity, and associated author IDs. Here is an example of the JSON request body:
+```json
+{
+  "title": "The Great Adventure",
+  "description": "A captivating tale of exploration and discovery that takes readers on a thrilling journey across uncharted lands.",
+  "isbn": "978-3-16-148410-0",
+  "publicationDate": "2023-02-01",
+  "price": 19.95,
+  "stockQuantity": 100,
+  "authorIds": [1, 2]
+}
+```
+
+### Update Book
+
+To update an existing book's details, send a `PUT` request to `/books/{id}`. It's important to note that the update operation relies on the `book_id` specified in the JSON payload, not on the ID in the URI. Therefore, the `{id}` in the URI `/books/{id}` should match the `book_id` in the JSON payload, or it can be a placeholder, as the actual book identification for update operations is extracted from the JSON body.
+
+Here is an example of the JSON request body for updating a book:
+
+```json
+{
+  "book_id": 1,
+  "title": "The Great Adventure Revised",
+  "description": "An updated description of the captivating tale, adding insights into the exploration and discoveries made.",
+  "isbn": "978-3-16-148410-0",
+  "publicationDate": "2023-03-01",
+  "price": 21.95,
+  "stockQuantity": 120,
+  "authorIds": [1]
+}
+```
 
 ## Configuration
 
-Application configurations are located in `src/main/resources/application.properties`. Modify them as needed for your environment.
+Application configurations are located in `src/main/resources/application.properties`.  
+gRPC Hibernate service server env `BOOKSTORE_GRPC_HOST`  default _localhost_.   
+gRPC Hibernate service server env `envBOOKSTORE_GRPC_PORT`  default _8082_  
+
 
 ## Contributing
 
