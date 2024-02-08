@@ -1,12 +1,13 @@
-package clh.comp313.gateway.bookstore.author.dtos;
+package clh.comp313.gateway.bookstore.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.google.protobuf.Timestamp;
 import io.clh.bookstore.author.Book;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import com.google.protobuf.Timestamp;
 import java.util.List;
 
 @RequiredArgsConstructor()
@@ -19,11 +20,12 @@ public class BookDto {
     private String description;
     private String isbn;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private java.sql.Date publicationDate;
 
     private Double price;
     private Integer stockQuantity;
-    private List<Long> authorId;
+    private List<Long> authorIds;
 
     public static BookDto of(Book book) {
         BookDto bookDto = new BookDto();
@@ -35,7 +37,7 @@ public class BookDto {
         bookDto.setStockQuantity(book.getStockQuantity());
 
         List<Long> authors = book.getAuthorIdsList().stream().toList();
-        bookDto.setAuthorId(authors);
+        bookDto.setAuthorIds(authors);
 
         if (book.hasPublicationDate()) {
             Timestamp ts = book.getPublicationDate();

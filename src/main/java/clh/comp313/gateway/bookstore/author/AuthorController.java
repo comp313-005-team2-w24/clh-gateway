@@ -1,9 +1,8 @@
-package clh.comp313.gateway.bookstore.author.controllers;
+package clh.comp313.gateway.bookstore.author;
 
-import clh.comp313.gateway.bookstore.author.dtos.AuthorDtO;
-import clh.comp313.gateway.bookstore.author.dtos.BookDto;
-import clh.comp313.gateway.bookstore.author.dtos.GetAuthorByIdResponseRest;
-import clh.comp313.gateway.bookstore.author.services.AuthorGrpcClientService;
+import clh.comp313.gateway.bookstore.dtos.Author;
+import clh.comp313.gateway.bookstore.dtos.BookDto;
+import clh.comp313.gateway.bookstore.dtos.authorsBooksDto;
 import com.google.protobuf.util.JsonFormat;
 import io.clh.bookstore.author.AuthorEntity;
 import io.clh.bookstore.author.Book;
@@ -27,7 +26,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createAuthor(@RequestBody AuthorDtO authorDto) {
+    public ResponseEntity<?> createAuthor(@RequestBody Author authorDto) {
         try {
             AuthorEntity grpcResponse = authorGrpcClientService.createAuthor(
                     new String(authorDto.getName()),
@@ -46,12 +45,12 @@ public class AuthorController {
 
 
     @GetMapping
-    public ResponseEntity<List<AuthorDtO>> getAllAuthors() {
+    public ResponseEntity<List<Author>> getAllAuthors() {
         Iterable<AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors();
 
-        List<AuthorDtO> authorList = new ArrayList<>();
+        List<Author> authorList = new ArrayList<>();
         for (AuthorEntity resp : allAuthors) {
-            AuthorDtO authorDto = new AuthorDtO((int) resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
+            Author authorDto = new Author((int) resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
             authorList.add(authorDto);
         }
 
@@ -67,9 +66,9 @@ public class AuthorController {
         List<Book> booksList = authorById.getBooksList();
 
         //GetAuthorByIdResponse imp
-        GetAuthorByIdResponseRest response = new GetAuthorByIdResponseRest();
+        authorsBooksDto response = new authorsBooksDto();
 
-        AuthorDtO authorDto = new AuthorDtO((int)
+        Author authorDto = new Author((int)
                 author.getAuthorId(),
                 author.getName().toCharArray(),
                 author.getBiography(),
@@ -83,10 +82,10 @@ public class AuthorController {
 
 
     @PutMapping("/{id}/avatar")
-    public ResponseEntity<AuthorDtO> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
+    public ResponseEntity<Author> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
         try {
             AuthorEntity updatedAuthor = authorGrpcClientService.setAuthorAvatarUrlById(id, avatarUrl);
-            AuthorDtO authorDto = new AuthorDtO((int) updatedAuthor.getAuthorId(), updatedAuthor.getName().toCharArray(), updatedAuthor.getBiography(), updatedAuthor.getAvatarUrl());
+            Author authorDto = new Author((int) updatedAuthor.getAuthorId(), updatedAuthor.getName().toCharArray(), updatedAuthor.getBiography(), updatedAuthor.getAvatarUrl());
 
             return ResponseEntity.ok(authorDto);
         } catch (Exception e) {

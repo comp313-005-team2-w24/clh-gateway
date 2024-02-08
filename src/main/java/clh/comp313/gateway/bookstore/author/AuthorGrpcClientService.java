@@ -1,4 +1,4 @@
-package clh.comp313.gateway.bookstore.author.services;
+package clh.comp313.gateway.bookstore.author;
 
 import io.clh.bookstore.author.*;
 import io.grpc.ManagedChannel;
