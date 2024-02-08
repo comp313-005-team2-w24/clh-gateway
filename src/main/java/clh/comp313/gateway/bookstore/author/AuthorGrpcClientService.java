@@ -1,4 +1,4 @@
-package clh.comp313.gateway.bookstore.author.services;
+package clh.comp313.gateway.bookstore.author;
 
 import io.clh.bookstore.author.*;
 import io.grpc.ManagedChannel;
@@ -22,7 +22,7 @@ public class AuthorGrpcClientService {
         blockingStub = AuthorServiceGrpc.newBlockingStub(channel);
     }
 
-    public CreateAuthorResponse createAuthor(String name, String biography, String avatar_url) {
+    public AuthorEntity createAuthor(String name, String biography, String avatar_url) {
         CreateAuthorRequest request = CreateAuthorRequest.newBuilder().setName(name).setBiography(biography).setAvatarUrl(avatar_url).build();
         return blockingStub.createAuthor(request);
     }
@@ -38,7 +38,7 @@ public class AuthorGrpcClientService {
     }
 
 
-    public AuthorEntity getAuthorById(Integer id){
+    public GetAuthorByIdResponse getAuthorById(Integer id){
         AuthorByIdRequest author_id = AuthorByIdRequest
                 .newBuilder().setAuthorId(id).build();
 
