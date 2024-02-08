@@ -67,13 +67,27 @@ Make sure Docker is running on your machine as Testcontainers requires it to lau
 
 # Bookstore API Endpoints
 
-## Auth
+## Authentication
 
 - `POST /auth/createUser` - Create a new user. This endpoint allows for the creation of a new user account in the system. It typically requires user details such as username, password, and email.
 
 - `POST /auth/login` - Authenticate a user and retrieve a token. This endpoint authenticates a user's credentials and returns a token for accessing protected routes.
 
 - `GET /auth/validateToken?token={token}` - Validate a user's authentication token. This endpoint checks if the provided authentication token is valid and active.
+
+### Create User
+
+- `POST /auth/createUser` - Registers a new user in the system. This endpoint requires a JSON payload with the user's username, password, and email.
+
+#### Example JSON Payload for Creating a User
+
+```json
+{
+  "username": "newuser",
+  "password": "password123",
+  "email": "newuser@example.com"
+}
+```
 
 ## Author
 
@@ -85,8 +99,6 @@ Make sure Docker is running on your machine as Testcontainers requires it to lau
 
 - `PUT /authors/{id}/avatar` - Update an author's avatar URL by ID. This endpoint allows for updating the avatar URL of an existing author, identified by their unique ID. It requires the new avatar URL as a request parameter.
 
-These endpoints provide a RESTful interface for managing users and authors within the bookstore system. Ensure proper authentication and authorization mechanisms are implemented to protect sensitive endpoints and data.
-
 ### Create Author
 To create a new author, send a `POST` request to `/authors/` with a JSON body containing the author's details. Here is an example of the JSON request body:
 
@@ -97,6 +109,18 @@ To create a new author, send a `POST` request to `/authors/` with a JSON body co
   "avatar_url": "http://example.com/avatar/johndoe.jpg"
 }
 ```
+
+
+## Books
+
+- `POST /books/` - Create a new book. This endpoint adds a new book to the bookstore inventory. It requires a detailed JSON payload with the book's title, description, ISBN, publication date, price, stock quantity, and a list of author IDs.
+
+- `GET /books/{id}` - Get a book by ID. This endpoint fetches details of a specific book identified by its unique ID. It returns information such as the book's title, description, ISBN, publication date, price, stock quantity, and associated authors.
+
+- `GET /books/` - Get all books. This endpoint retrieves a list of all books in the bookstore. It supports pagination through an optional `page` query parameter, allowing for the browsing of books in manageable chunks.
+
+- `PUT /books/{id}` - Update a book. This endpoint updates the details of an existing book. It's important to note that the operation relies on the `book_id` specified in the JSON payload for identifying the book to be updated, not the ID in the URI. Ensure that the `book_id` in your JSON payload correctly identifies the book you wish to update.
+
 
 ### Create Book
 To add a new book to the system, send a POST request to /books/ with a JSON body detailing the book's information, including its title, description, ISBN, publication date, price, stock quantity, and associated author IDs. Here is an example of the JSON request body:
