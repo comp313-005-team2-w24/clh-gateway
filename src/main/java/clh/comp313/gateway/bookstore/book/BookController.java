@@ -1,6 +1,5 @@
 package clh.comp313.gateway.bookstore.book;
 
-import clh.comp313.gateway.bookstore.dtos.Author;
 import clh.comp313.gateway.bookstore.dtos.BookDto;
 import clh.comp313.gateway.bookstore.utils.DtoProtoConversions;
 import com.google.protobuf.util.JsonFormat;

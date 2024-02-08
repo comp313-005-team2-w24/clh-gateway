@@ -10,13 +10,13 @@ service AuthService {
 
 message LoginRequest {
   string password = 2;
-  string email    = 3;
+  string email = 3;
 }
 
 message CreateUserRequest {
   string username = 1;
   string password = 2;
-  string email    = 3;
+  string email = 3;
 }
 
 message ValidateRequest {
@@ -24,7 +24,7 @@ message ValidateRequest {
 }
 
 message CreateUserResponse {
-  bool success   = 1;
+  bool success = 1;
   string message = 2;
 }
 

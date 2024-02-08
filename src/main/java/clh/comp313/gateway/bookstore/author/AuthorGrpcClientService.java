@@ -3,14 +3,12 @@ package clh.comp313.gateway.bookstore.author;
 import io.clh.bookstore.author.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import io.grpc.stub.StreamObserver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.stream.Stream;
 
 @Service
 public class AuthorGrpcClientService {
@@ -38,7 +36,7 @@ public class AuthorGrpcClientService {
     }
 
 
-    public GetAuthorByIdResponse getAuthorById(Integer id){
+    public GetAuthorByIdResponse getAuthorById(Integer id) {
         AuthorByIdRequest author_id = AuthorByIdRequest
                 .newBuilder().setAuthorId(id).build();
 

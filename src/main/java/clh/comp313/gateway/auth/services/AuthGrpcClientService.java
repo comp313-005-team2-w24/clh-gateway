@@ -3,9 +3,8 @@ package clh.comp313.gateway.auth.services;
 import clh.comp313.gateway.grpc.AuthServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import org.springframework.stereotype.Service;
-
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 @Service
 public class AuthGrpcClientService {
