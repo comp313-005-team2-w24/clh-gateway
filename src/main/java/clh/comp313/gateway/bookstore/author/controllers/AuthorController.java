@@ -76,7 +76,7 @@ public class AuthorController {
                 author.getAvatarUrl());
         List<BookDto> bookDtoList = authorById.getBooksList().stream().map(BookDto::of).toList();
 
-        response.setAuthorDTO(authorDto);
+        response.setAuthor(authorDto);
         response.setBooks(bookDtoList);
         return ResponseEntity.ok(response);
     }
