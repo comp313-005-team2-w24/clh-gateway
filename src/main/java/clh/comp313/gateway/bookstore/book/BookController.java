@@ -47,7 +47,8 @@ public class BookController {
                     new java.sql.Date(grpcResponse.getBook().getPublicationDate().getSeconds() * 1000),
                     grpcResponse.getBook().getPrice(),
                     grpcResponse.getBook().getStockQuantity(),
-                    grpcResponse.getBook().getAuthorIdsList()
+                    grpcResponse.getBook().getAuthorIdsList(),
+                    grpcResponse.getBook().getAvatarUrl()
             );
             return ResponseEntity.ok(bookDto);
         } catch (Exception e) {
@@ -67,7 +68,8 @@ public class BookController {
                     new java.sql.Date(bookProto.getPublicationDate().getSeconds() * 1000),
                     bookProto.getPrice(),
                     bookProto.getStockQuantity(),
-                    bookProto.getAuthorIdsList()
+                    bookProto.getAuthorIdsList(),
+                    bookProto.getAvatarUrl()
             )).collect(Collectors.toList());
             return ResponseEntity.ok(booksDto);
         } catch (Exception e) {

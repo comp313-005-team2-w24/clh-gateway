@@ -26,6 +26,10 @@ public class DtoProtoConversions {
             bookBuilder.setBookId(book.getBook_id());
         }
 
+        if (book.getAvatar_url() != null) {
+            bookBuilder.setAvatarUrl(book.getAvatar_url());
+        }
+
         if (timestamp != null) {
             bookBuilder.setPublicationDate(timestamp);
         }

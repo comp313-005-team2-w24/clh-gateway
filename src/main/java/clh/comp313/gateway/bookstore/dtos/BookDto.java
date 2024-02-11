@@ -26,6 +26,7 @@ public class BookDto {
     private Double price;
     private Integer stockQuantity;
     private List<Long> authorIds;
+    private String avatar_url;
 
     public static BookDto of(Book book) {
         BookDto bookDto = new BookDto();
@@ -35,6 +36,7 @@ public class BookDto {
         bookDto.setIsbn(book.getIsbn());
         bookDto.setPrice(book.getPrice());
         bookDto.setStockQuantity(book.getStockQuantity());
+        bookDto.setAvatar_url(book.getAvatarUrl());
 
         List<Long> authors = book.getAuthorIdsList().stream().toList();
         bookDto.setAuthorIds(authors);
@@ -44,6 +46,8 @@ public class BookDto {
             long millis = ts.getSeconds() * 1000 + ts.getNanos() / 1000000;
             bookDto.setPublicationDate(new java.sql.Date(millis));
         }
+
+
 
         return bookDto;
     }
