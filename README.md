@@ -159,7 +159,7 @@ Here is an example of the JSON request body for updating a book:
 
 Application configurations are located in `src/main/resources/application.properties`.  
 gRPC Hibernate service server env `BOOKSTORE_GRPC_HOST`  default _localhost_.   
-gRPC Hibernate service server env `envBOOKSTORE_GRPC_PORT`  default _8082_  
+gRPC Hibernate service server env `BOOKSTORE_GRPC_PORT`  default _8082_  
 
 
 ## Contributing
