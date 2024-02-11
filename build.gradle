@@ -19,7 +19,7 @@ jib {
 
 
 group = 'clh.comp313'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {
