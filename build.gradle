@@ -19,15 +19,15 @@ def getGitCommitHash() {
     return stdout.toString().trim()
 }
 
-jib {
-    to {
-        image = "glad2os/clh-bookstore:${version}-${getGitCommitHash()}"
-    }
-}
-
 group = 'clh.comp313'
 version = '0.0.2-SNAPSHOT'
 sourceCompatibility = '17'
+
+jib {
+    to {
+        image = "glad2os/clh-gateway:${version}-${getGitCommitHash()}"
+    }
+}
 
 repositories {
     mavenCentral()
