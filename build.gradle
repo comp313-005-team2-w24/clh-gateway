@@ -6,17 +6,24 @@ plugins {
     id 'com.google.cloud.tools.jib' version '3.4.0'
 }
 
-
 tasks.named('jib').configure {
     dependsOn 'build'
 }
 
-jib {
-    to {
-        image = 'glad2os/clh-gateway'
+def getGitCommitHash() {
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
     }
+    return stdout.toString().trim()
 }
 
+jib {
+    to {
+        image = "glad2os/clh-bookstore:${version}-${getGitCommitHash()}"
+    }
+}
 
 group = 'clh.comp313'
 version = '0.0.2-SNAPSHOT'
