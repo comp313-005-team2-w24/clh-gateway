@@ -3,14 +3,19 @@ package clh.comp313.gateway.auth.controllers;
 import clh.comp313.gateway.auth.dtos.UserDTO;
 import clh.comp313.gateway.auth.dtos.ValidateResponseDTO;
 import clh.comp313.gateway.auth.services.AuthGrpcClientService;
-import clh.comp313.gateway.grpc.*;
+import io.clh.gateway.auth.*;
 import com.google.protobuf.util.JsonFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -20,7 +25,6 @@ public class AuthController {
     public AuthController(AuthGrpcClientService authGrpcClientService) {
         this.authGrpcClientService = authGrpcClientService;
     }
-
 
     @PostMapping("/createUser")
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
@@ -77,4 +81,15 @@ public class AuthController {
             return new ResponseEntity<>(Collections.singletonMap("error", e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+//    @GetMapping("/api/user/profile")
+//    public boolean getUserProfile() {
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        if (authentication == null || !authentication.isAuthenticated()) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized").hasBody();
+//        }
+//        List<String> collect = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+//
+//        return true;
+//    }
 }

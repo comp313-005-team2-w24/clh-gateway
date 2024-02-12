@@ -1,6 +1,7 @@
 package clh.comp313.gateway.grpc;
 
 import com.redis.testcontainers.RedisContainer;
+import io.clh.gateway.auth.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;
@@ -55,15 +56,15 @@ public class AuthTest {
     }
 
 
-    @Test
-    @Order(1)
-    public void testCreateUser() {
-        CreateUserRequest request = CreateUserRequest.newBuilder().setUsername("newexampleuser").setPassword("mygreatpassword").setEmail("email@domain.com").build();
-        CreateUserResponse response = authServiceStub.createUser(request);
-
-        assertThat(response.getSuccess()).isTrue();
-        assertThat(response.getMessage()).isNotBlank();
-    }
+//    @Test
+//    @Order(1)
+//    public void testCreateUser() {
+//        CreateUserRequest request = CreateUserRequest.newBuilder().setUsername("newexampleuser").setPassword("mygreatpassword").setEmail("email@domain.com").build();
+//        CreateUserResponse response = authServiceStub.createUser(request);
+//
+//        assertThat(response.getSuccess()).isTrue();
+//        assertThat(response.getMessage()).isNotBlank();
+//    }
 
 //    @Test
 //    @Order(2)

@@ -10,6 +10,7 @@ import io.clh.bookstore.author.GetAuthorByIdResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class AuthorController {
         this.authorGrpcClientService = authorGrpcClientService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createAuthor(@RequestBody Author authorDto) {
         try {
@@ -43,7 +45,7 @@ public class AuthorController {
         }
     }
 
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
     @GetMapping
     public ResponseEntity<List<Author>> getAllAuthors() {
         Iterable<AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors();
@@ -57,6 +59,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorList);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getAuthorById(@PathVariable Long id) {
         GetAuthorByIdResponse authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
@@ -81,6 +84,7 @@ public class AuthorController {
     }
 
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
     @PutMapping("/{id}/avatar")
     public ResponseEntity<Author> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
         try {
