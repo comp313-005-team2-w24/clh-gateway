@@ -89,7 +89,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             case 2:
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 break;
-            // Consider adding more cases as needed
         }
 
         return authorities;
