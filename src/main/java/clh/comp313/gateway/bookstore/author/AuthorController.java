@@ -45,7 +45,7 @@ public class AuthorController {
         }
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
     @GetMapping
     public ResponseEntity<List<Author>> getAllAuthors() {
         Iterable<AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors();
@@ -59,7 +59,7 @@ public class AuthorController {
         return ResponseEntity.ok(authorList);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'GUEST', 'USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getAuthorById(@PathVariable Long id) {
         GetAuthorByIdResponse authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
@@ -83,8 +83,7 @@ public class AuthorController {
         return ResponseEntity.ok(response);
     }
 
-
-    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}/avatar")
     public ResponseEntity<Author> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
         try {
