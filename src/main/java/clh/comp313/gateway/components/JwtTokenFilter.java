@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -37,30 +38,32 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String token = extractToken(request);
+        List<GrantedAuthority> authorities;
+
         if (token != null) {
             try {
                 ValidateRequest grpcRequest = ValidateRequest.newBuilder().setToken(token).build();
                 ValidateResponse grpcResponse = authGrpcClientService.authServiceStub().validateToken(grpcRequest);
 
-                UserPermissionsRequest userPermissionsRequest = UserPermissionsRequest.newBuilder().setToken(token).build();
-                UserPermissionsResponse userPermissions = authGrpcClientService.authServiceStub().getUserPermissions(userPermissionsRequest);
-
-                int permissions = userPermissions.getPermissions();
-                List<GrantedAuthority> authorities = mapPermissionsToAuthorities(permissions);
-
                 if (grpcResponse.getValid()) {
-                    UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(token, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                    UserPermissionsRequest userPermissionsRequest = UserPermissionsRequest.newBuilder().setToken(token).build();
+                    UserPermissionsResponse userPermissions = authGrpcClientService.authServiceStub().getUserPermissions(userPermissionsRequest);
+
+                    int permissions = userPermissions.getPermissions();
+                    authorities = mapPermissionsToAuthorities(permissions);
                 } else {
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    return;
+                    authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST"));
                 }
             } catch (Exception e) {
-                response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-                return;
+                authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST"));
             }
+        } else {
+            authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_GUEST"));
         }
+
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(token, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
@@ -81,8 +84,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 authorities.add(new SimpleGrantedAuthority("ROLE_GUEST"));
                 break;
             case 1:
+                authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+                break;
+            case 2:
                 authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
                 break;
+            // Consider adding more cases as needed
         }
 
         return authorities;
