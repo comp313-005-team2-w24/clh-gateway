@@ -7,6 +7,7 @@ import io.clh.bookstore.BookOuterClass;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class BookController {
         this.bookGrpcClientService = bookGrpcClientService;
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createBook(@RequestBody BookDto bookDto) {
         try {
@@ -35,6 +37,7 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> getBookById(@PathVariable Long id) {
         try {
@@ -56,6 +59,7 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
     @GetMapping
     public ResponseEntity<List<BookDto>> getAllBooks(@RequestParam(value = "page", defaultValue = "0") Integer page) {
         try {
@@ -77,6 +81,7 @@ public class BookController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto bookDto) {
         try {
