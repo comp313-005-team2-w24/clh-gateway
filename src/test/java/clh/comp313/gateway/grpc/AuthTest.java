@@ -1,7 +1,9 @@
 package clh.comp313.gateway.grpc;
 
 import com.redis.testcontainers.RedisContainer;
-import io.clh.gateway.auth.*;
+import io.clh.gateway.auth.AuthServiceGrpc;
+import io.clh.gateway.auth.LoginRequest;
+import io.clh.gateway.auth.LoginResponse;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Status;

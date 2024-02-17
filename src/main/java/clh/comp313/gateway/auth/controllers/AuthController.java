@@ -3,19 +3,14 @@ package clh.comp313.gateway.auth.controllers;
 import clh.comp313.gateway.auth.dtos.UserDTO;
 import clh.comp313.gateway.auth.dtos.ValidateResponseDTO;
 import clh.comp313.gateway.auth.services.AuthGrpcClientService;
-import io.clh.gateway.auth.*;
 import com.google.protobuf.util.JsonFormat;
+import io.clh.gateway.auth.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
@@ -73,7 +68,9 @@ public class AuthController {
             ValidateRequest grpcRequest = ValidateRequest.newBuilder().setToken(token).build();
             ValidateResponse grpcResponse = authGrpcClientService.authServiceStub().validateToken(grpcRequest);
 
-            ValidateResponseDTO responseDTO = new ValidateResponseDTO(grpcResponse.getValid());
+            int permissions = grpcResponse.getPermissions().getPermissions();
+            ValidateResponseDTO responseDTO = new ValidateResponseDTO(grpcResponse.getValid(), permissions);
+
             return ResponseEntity.ok(responseDTO);
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
