@@ -1,13 +1,10 @@
 package clh.comp313.gateway.bookstore.book;
 
-import io.clh.bookstore.BookOuterClass;
-import io.clh.bookstore.BookServiceGrpc;
 import io.clh.bookstore.bookstore.Book;
 import io.clh.bookstore.bookstore.BookServiceGrpc;
 import io.clh.bookstore.entities.Entities;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

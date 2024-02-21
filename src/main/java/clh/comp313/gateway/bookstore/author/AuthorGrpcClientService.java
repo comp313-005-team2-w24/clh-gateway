@@ -1,6 +1,7 @@
 package clh.comp313.gateway.bookstore.author;
 
-import io.clh.bookstore.author.*;
+import io.clh.bookstore.author.Author;
+import io.clh.bookstore.author.AuthorServiceGrpc;
 import io.clh.bookstore.entities.Entities;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
