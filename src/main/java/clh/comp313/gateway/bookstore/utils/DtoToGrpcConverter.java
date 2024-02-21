@@ -2,6 +2,7 @@ package clh.comp313.gateway.bookstore.utils;
 
 import clh.comp313.gateway.bookstore.dtos.AuthorDto;
 import clh.comp313.gateway.bookstore.dtos.BookDto;
+import clh.comp313.gateway.bookstore.dtos.CategoryDto;
 import com.google.protobuf.Timestamp;
 import io.clh.bookstore.entities.Entities;
 
@@ -71,4 +72,26 @@ public class DtoToGrpcConverter {
         return bookBuilder.build();
     }
 
+    public static Entities.Category CategoryDtoToCategoryEntity(CategoryDto categoryDto) {
+        Entities.Category.Builder categoryBuilder = Entities.Category.newBuilder();
+
+        if (categoryDto.getId() != null) {
+            categoryBuilder.setId(categoryDto.getId());
+        }
+
+        if (categoryDto.getName() != null) {
+            categoryBuilder.setName(categoryDto.getName());
+        }
+
+        if (categoryDto.getDescription() != null) {
+            categoryBuilder.setDescription(categoryDto.getDescription());
+        }
+
+        if (categoryDto.getBooks() != null && !categoryDto.getBooks().isEmpty()) {
+            categoryDto.getBooks().forEach(bookDto ->
+                    categoryBuilder.addBooks(BookDtoToBookEntity(bookDto)));
+        }
+
+        return categoryBuilder.build();
+    }
 }
