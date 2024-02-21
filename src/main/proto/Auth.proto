@@ -1,14 +1,24 @@
 syntax = "proto3";
 option java_multiple_files = true;
-option java_package = "clh.comp313.gateway.grpc";
+option java_package = "io.clh.gateway.auth";
 
 service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse);
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
   rpc ValidateToken(ValidateRequest) returns (ValidateResponse);
+  rpc GetUserPermissions(UserPermissionsRequest) returns (UserPermissionsResponse);
+}
+
+message UserPermissionsRequest{
+  string token = 1;
+}
+
+message UserPermissionsResponse{
+  int32 permissions = 1;
 }
 
 message LoginRequest {
+  string username = 1;
   string password = 2;
   string email = 3;
 }
@@ -34,4 +44,5 @@ message LoginResponse {
 
 message ValidateResponse {
   bool valid = 1;
+  UserPermissionsResponse permissions = 2;
 }

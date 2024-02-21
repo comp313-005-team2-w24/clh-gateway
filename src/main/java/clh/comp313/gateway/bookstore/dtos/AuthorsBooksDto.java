@@ -1,16 +1,14 @@
 package clh.comp313.gateway.bookstore.dtos;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor()
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Data
-public class authorsBooksDto {
-    private Author author;
+@Builder
+public class AuthorsBooksDto {
+    private AuthorDto authorDto;
     private List<BookDto> books;
 }

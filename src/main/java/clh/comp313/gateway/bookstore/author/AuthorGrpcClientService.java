@@ -1,6 +1,8 @@
 package clh.comp313.gateway.bookstore.author;
 
-import io.clh.bookstore.author.*;
+import io.clh.bookstore.author.Author;
+import io.clh.bookstore.author.AuthorServiceGrpc;
+import io.clh.bookstore.entities.Entities;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,31 +22,24 @@ public class AuthorGrpcClientService {
         blockingStub = AuthorServiceGrpc.newBlockingStub(channel);
     }
 
-    public AuthorEntity createAuthor(String name, String biography, String avatar_url) {
-        CreateAuthorRequest request = CreateAuthorRequest.newBuilder().setName(name).setBiography(biography).setAvatarUrl(avatar_url).build();
+    public Entities.AuthorEntity createAuthor(Author.CreateAuthorRequest request) {
         return blockingStub.createAuthor(request);
     }
 
-    public Iterable<AuthorEntity> getAllAuthors() {
-        GetAllAuthorsRequest request = GetAllAuthorsRequest.newBuilder().build();
-        Iterator<AuthorEntity> responseIterator = blockingStub.getAllAuthors(request);
+    public Iterable<Entities.AuthorEntity> getAllAuthors(Author.GetAllAuthorsRequest request) {
+        Iterator<Entities.AuthorEntity> responseIterator = blockingStub.getAllAuthors(request);
 
-        List<AuthorEntity> responseList = new ArrayList<>();
+        List<Entities.AuthorEntity> responseList = new ArrayList<>();
         responseIterator.forEachRemaining(responseList::add);
 
         return responseList;
     }
 
-
-    public GetAuthorByIdResponse getAuthorById(Integer id) {
-        AuthorByIdRequest author_id = AuthorByIdRequest
-                .newBuilder().setAuthorId(id).build();
-
-        return blockingStub.getAuthorById(author_id);
+    public Author.GetAuthorByIdResponse getAuthorById(Author.AuthorByIdRequest request) {
+        return blockingStub.getAuthorById(request);
     }
 
-    public AuthorEntity setAuthorAvatarUrlById(Long id, String avatar_url) {
-        AuthorAvatarUrlRequest request = AuthorAvatarUrlRequest.newBuilder().setAuthorId(id).setAvatarUrl(avatar_url).build();
+    public Entities.AuthorEntity setAuthorAvatarUrlById(Author.AuthorAvatarUrlRequest request) {
         return blockingStub.setAuthorAvatarUrlById(request);
     }
 }

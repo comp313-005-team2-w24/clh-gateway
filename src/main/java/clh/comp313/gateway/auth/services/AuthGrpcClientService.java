@@ -1,6 +1,6 @@
 package clh.comp313.gateway.auth.services;
 
-import clh.comp313.gateway.grpc.AuthServiceGrpc;
+import io.clh.gateway.auth.AuthServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;

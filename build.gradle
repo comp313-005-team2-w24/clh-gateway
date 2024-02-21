@@ -60,6 +60,9 @@ dependencies {
 
     //cache
     implementation 'redis.clients:jedis:5.1.0'
+
+    //security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '3.2.2'
 }
 
 protobuf {
