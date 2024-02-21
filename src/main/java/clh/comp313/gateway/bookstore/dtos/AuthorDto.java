@@ -4,7 +4,8 @@ import lombok.*;
 
 @RequiredArgsConstructor()
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Data
+@Getter
+@Setter
 @Builder
 public class AuthorDto {
     private Long author_id;

@@ -4,12 +4,14 @@ import lombok.*;
 
 import java.util.List;
 
-@RequiredArgsConstructor()
+@RequiredArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
 @Builder
-public class AuthorsBooksDto {
-    private AuthorDto authorDto;
+public class CategoryDto {
+    private Long id;
+    private String name;
+    private String description;
     private List<BookDto> books;
 }

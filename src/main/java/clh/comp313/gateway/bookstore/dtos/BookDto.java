@@ -7,7 +7,8 @@ import java.util.List;
 
 @RequiredArgsConstructor()
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
-@Data
+@Getter
+@Setter
 @Builder
 public class BookDto {
     private Long book_id;
