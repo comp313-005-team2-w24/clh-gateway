@@ -25,11 +25,10 @@ public class AuthorGrpcClientService {
         return blockingStub.createAuthor(request);
     }
 
-    public Iterable<AuthorEntity> getAllAuthors() {
-        GetAllAuthorsRequest request = GetAllAuthorsRequest.newBuilder().build();
-        Iterator<AuthorEntity> responseIterator = blockingStub.getAllAuthors(request);
+    public Iterable<Entities.AuthorEntity> getAllAuthors(Author.GetAllAuthorsRequest request) {
+        Iterator<Entities.AuthorEntity> responseIterator = blockingStub.getAllAuthors(request);
 
-        List<AuthorEntity> responseList = new ArrayList<>();
+        List<Entities.AuthorEntity> responseList = new ArrayList<>();
         responseIterator.forEachRemaining(responseList::add);
 
         return responseList;

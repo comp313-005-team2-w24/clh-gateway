@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,15 +32,9 @@ public class AuthorController {
     @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
     @GetMapping
     public ResponseEntity<List<AuthorDto>> getAllAuthors() {
-        Iterable<AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors();
+        List<AuthorDto> allAuthors = authorService.getAllAuthors();
 
-        List<AuthorDto> authorDtoList = new ArrayList<>();
-        for (AuthorEntity resp : allAuthors) {
-            AuthorDto authorDto = new AuthorDto((int) resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
-            authorDtoList.add(authorDto);
-        }
-
-        return ResponseEntity.ok(authorDtoList);
+        return ResponseEntity.ok(allAuthors);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'GUEST', 'USER')")
