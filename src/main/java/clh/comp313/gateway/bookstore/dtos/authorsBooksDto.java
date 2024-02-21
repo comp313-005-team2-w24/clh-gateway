@@ -11,6 +11,6 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Data
 public class authorsBooksDto {
-    private Author author;
+    private AuthorDto authorDto;
     private List<BookDto> books;
 }

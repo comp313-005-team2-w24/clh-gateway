@@ -1,6 +1,7 @@
 package clh.comp313.gateway.bookstore.author;
 
 import io.clh.bookstore.author.*;
+import io.clh.bookstore.entities.Entities;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,8 +21,7 @@ public class AuthorGrpcClientService {
         blockingStub = AuthorServiceGrpc.newBlockingStub(channel);
     }
 
-    public AuthorEntity createAuthor(String name, String biography, String avatar_url) {
-        CreateAuthorRequest request = CreateAuthorRequest.newBuilder().setName(name).setBiography(biography).setAvatarUrl(avatar_url).build();
+    public Entities.AuthorEntity createAuthor(Author.CreateAuthorRequest request) {
         return blockingStub.createAuthor(request);
     }
 
