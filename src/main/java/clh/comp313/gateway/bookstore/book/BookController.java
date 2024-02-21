@@ -17,24 +17,17 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/books")
 public class BookController {
-    private final BookGrpcClientService bookGrpcClientService;
+    private final BookService bookService;
 
-    public BookController(BookGrpcClientService bookGrpcClientService) {
-        this.bookGrpcClientService = bookGrpcClientService;
+    public BookController(BookGrpcClientService bookGrpcClientService, BookService bookService) {
+        this.bookService = bookService;
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> createBook(@RequestBody BookDto bookDto) {
-        try {
-            BookOuterClass.Book bookProto = DtoProtoConversions.convertToBookOuterBookProto(bookDto);
-            BookOuterClass.CreateBookResponse grpcResponse = bookGrpcClientService.createBook(bookProto);
-
-            String jsonResponse = JsonFormat.printer().print(grpcResponse.getBook());
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(jsonResponse);
-        } catch (Exception e) {
-            return new ResponseEntity<>(Collections.singletonMap("error", e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        BookDto book = bookService.createBook(bookDto);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(book);
     }
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
