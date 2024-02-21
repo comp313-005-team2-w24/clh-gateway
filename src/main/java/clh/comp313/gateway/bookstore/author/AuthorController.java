@@ -1,11 +1,7 @@
 package clh.comp313.gateway.bookstore.author;
 
 import clh.comp313.gateway.bookstore.dtos.AuthorDto;
-import clh.comp313.gateway.bookstore.dtos.BookDto;
-import clh.comp313.gateway.bookstore.dtos.authorsBooksDto;
-import io.clh.bookstore.author.AuthorEntity;
-import io.clh.bookstore.author.Book;
-import io.clh.bookstore.author.GetAuthorByIdResponse;
+import clh.comp313.gateway.bookstore.dtos.AuthorsBooksDto;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,8 +27,9 @@ public class AuthorController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'GUEST', 'USER')")
     @GetMapping
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
-        List<AuthorDto> allAuthors = authorService.getAllAuthors();
+    public ResponseEntity<List<AuthorDto>> getAllAuthors(@RequestParam(value = "page", defaultValue = "0") Integer page) {
+
+        List<AuthorDto> allAuthors = authorService.getAllAuthors(page);
 
         return ResponseEntity.ok(allAuthors);
     }
@@ -40,38 +37,14 @@ public class AuthorController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'GUEST', 'USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<?> getAuthorById(@PathVariable Long id) {
-        GetAuthorByIdResponse authorById = authorGrpcClientService.getAuthorById(Math.toIntExact(id));
-
-        //gRPC
-        AuthorEntity author = authorById.getAuthor();
-        List<Book> booksList = authorById.getBooksList();
-
-        //GetAuthorByIdResponse imp
-        authorsBooksDto response = new authorsBooksDto();
-
-        AuthorDto authorDto = new AuthorDto((int)
-                author.getAuthorId(),
-                author.getName().toCharArray(),
-                author.getBiography(),
-                author.getAvatarUrl());
-        List<BookDto> bookDtoList = authorById.getBooksList().stream().map(BookDto::of).toList();
-
-        response.setAuthorDto(authorDto);
-        response.setBooks(bookDtoList);
-        return ResponseEntity.ok(response);
+        AuthorsBooksDto authorById = authorService.getAuthorById(id);
+        return ResponseEntity.ok(authorById);
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}/avatar")
     public ResponseEntity<AuthorDto> setAuthorAvatarUrlById(@PathVariable("id") Long id, @RequestParam("avatar_url") String avatarUrl) {
-        try {
-            AuthorEntity updatedAuthor = authorGrpcClientService.setAuthorAvatarUrlById(id, avatarUrl);
-            AuthorDto authorDto = new AuthorDto((int) updatedAuthor.getAuthorId(), updatedAuthor.getName().toCharArray(), updatedAuthor.getBiography(), updatedAuthor.getAvatarUrl());
-
-            return ResponseEntity.ok(authorDto);
-        } catch (Exception e) {
-            System.err.println("Error updating author's avatar URL: " + e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
+        AuthorDto authorDto = authorService.updateAuthorAvatarById(id, avatarUrl);
+        return ResponseEntity.ok(authorDto);
     }
 }

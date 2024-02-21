@@ -34,16 +34,11 @@ public class AuthorGrpcClientService {
         return responseList;
     }
 
-
-    public GetAuthorByIdResponse getAuthorById(Integer id) {
-        AuthorByIdRequest author_id = AuthorByIdRequest
-                .newBuilder().setAuthorId(id).build();
-
-        return blockingStub.getAuthorById(author_id);
+    public Author.GetAuthorByIdResponse getAuthorById(Author.AuthorByIdRequest request) {
+        return blockingStub.getAuthorById(request);
     }
 
-    public AuthorEntity setAuthorAvatarUrlById(Long id, String avatar_url) {
-        AuthorAvatarUrlRequest request = AuthorAvatarUrlRequest.newBuilder().setAuthorId(id).setAvatarUrl(avatar_url).build();
+    public Entities.AuthorEntity setAuthorAvatarUrlById(Author.AuthorAvatarUrlRequest request) {
         return blockingStub.setAuthorAvatarUrlById(request);
     }
 }

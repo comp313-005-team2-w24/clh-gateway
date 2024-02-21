@@ -1,6 +1,9 @@
 package clh.comp313.gateway.bookstore.author;
 
 import clh.comp313.gateway.bookstore.dtos.AuthorDto;
+import clh.comp313.gateway.bookstore.dtos.AuthorsBooksDto;
+import clh.comp313.gateway.bookstore.dtos.BookDto;
+import clh.comp313.gateway.bookstore.utils.GrpcToDtoConverter;
 import io.clh.bookstore.author.Author;
 import io.clh.bookstore.entities.Entities;
 import org.springframework.stereotype.Service;
@@ -29,8 +32,8 @@ public class AuthorService {
     }
 
 
-    public List<AuthorDto> getAllAuthors() {
-        Author.GetAllAuthorsRequest request = Author.GetAllAuthorsRequest.newBuilder().build();
+    public List<AuthorDto> getAllAuthors(Integer page) {
+        Author.GetAllAuthorsRequest request = Author.GetAllAuthorsRequest.newBuilder().setPage(page).build();
 
         Iterable<Entities.AuthorEntity> allAuthors = authorGrpcClientService.getAllAuthors(request);
 
@@ -41,5 +44,21 @@ public class AuthorService {
         }
 
         return authorDtoList;
+    }
+
+    public AuthorsBooksDto getAuthorById(Long authorId) {
+        Author.AuthorByIdRequest build = Author.AuthorByIdRequest.newBuilder().setAuthorId(authorId).build();
+
+        Author.GetAuthorByIdResponse response = authorGrpcClientService.getAuthorById(build);
+        AuthorDto authorDto = AuthorEntityToAuthorDto(response.getAuthor());
+        List<BookDto> bookDtoList = response.getBooksList().stream().map(GrpcToDtoConverter::BookGrpcToBookDto).toList();
+
+        return AuthorsBooksDto.builder().authorDto(authorDto).books(bookDtoList).build();
+    }
+
+    public AuthorDto updateAuthorAvatarById(Long id, String avatar_url) {
+        Author.AuthorAvatarUrlRequest build = Author.AuthorAvatarUrlRequest.newBuilder().setAuthorId(id).setAvatarUrl(avatar_url).build();
+        Entities.AuthorEntity authorEntity = authorGrpcClientService.setAuthorAvatarUrlById(build);
+        return AuthorEntityToAuthorDto(authorEntity);
     }
 }
