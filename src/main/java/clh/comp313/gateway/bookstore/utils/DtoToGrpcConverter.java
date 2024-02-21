@@ -9,8 +9,19 @@ import java.util.Arrays;
 
 public class DtoToGrpcConverter {
     public static Entities.AuthorEntity AuthorDtoToAuthorEntity(AuthorDto authorDto) {
-        return Entities.AuthorEntity.newBuilder().setAuthorId(authorDto.getAuthor_id()).setName(Arrays.toString(authorDto.getName())).setBiography(authorDto.getBiography()).setAvatarUrl(authorDto.getAvatar_url()).build();
+        Entities.AuthorEntity.Builder builder = Entities.AuthorEntity.newBuilder();
+
+        if (authorDto.getAuthor_id() != null) {
+            builder.setAuthorId(authorDto.getAuthor_id());
+        }
+
+        return builder
+                .setName(Arrays.toString(authorDto.getName()))
+                .setBiography(authorDto.getBiography())
+                .setAvatarUrl(authorDto.getAvatar_url())
+                .build();
     }
+
 
     public static Entities.Book BookDtoToBookEntity(BookDto book) {
         Timestamp timestamp = null;
