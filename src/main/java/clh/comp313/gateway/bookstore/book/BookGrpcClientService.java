@@ -36,4 +36,8 @@ public class BookGrpcClientService {
     public Book.UpdateBookResponse updateBook(Book.UpdateBookRequest request) {
         return blockingStub.updateBook(request);
     }
+
+    public Book.DeleteBookResponse deleteBook(Book.DeleteBookRequest request) {
+        return blockingStub.deleteBook(request);
+    }
 }

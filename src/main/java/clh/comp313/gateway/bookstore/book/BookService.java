@@ -55,11 +55,17 @@ public class BookService {
         //TODO: ???? Remove redundant id from proto
         bookDto.setBook_id(id);
 
-        Book.UpdateBookRequest build = Book.UpdateBookRequest.newBuilder()
-                .setBook(BookDtoToBookEntity(bookDto))
-                .build();
+        Book.UpdateBookRequest build = Book.UpdateBookRequest.newBuilder().setBook(BookDtoToBookEntity(bookDto)).build();
 
         Book.UpdateBookResponse updateBookResponse = bookGrpcClientService.updateBook(build);
         return BookGrpcToBookDto(updateBookResponse.getBook());
+    }
+
+    public BookDto deleteBook(Long id) {
+        BookDto build = BookDto.builder().book_id(id).build();
+        Book.DeleteBookRequest deleteBookRequest = Book.DeleteBookRequest.newBuilder().setBook(BookDtoToBookEntity(build)).build();
+
+        Book.DeleteBookResponse deleteBookResponse = bookGrpcClientService.deleteBook(deleteBookRequest);
+        return BookGrpcToBookDto(deleteBookResponse.getBook());
     }
 }

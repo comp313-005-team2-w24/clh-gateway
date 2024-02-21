@@ -1,13 +1,11 @@
 package clh.comp313.gateway.bookstore.book;
 
 import clh.comp313.gateway.bookstore.dtos.BookDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -43,11 +41,14 @@ public class BookController {
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable Long id, @RequestBody BookDto bookDto) {
-        try {
-            BookDto updatedBook = bookService.updateBook(id, bookDto);
-            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(updatedBook);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.singletonMap("error", e.getLocalizedMessage()));
-        }
+        BookDto updatedBook = bookService.updateBook(id, bookDto);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(updatedBook);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable Long id) {
+        BookDto updatedBook = bookService.deleteBook(id);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(updatedBook);
     }
 }

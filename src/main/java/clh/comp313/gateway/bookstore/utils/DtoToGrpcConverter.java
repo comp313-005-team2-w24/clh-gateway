@@ -30,10 +30,30 @@ public class DtoToGrpcConverter {
             timestamp = Timestamp.newBuilder().setSeconds(millis / 1000).setNanos((int) ((millis % 1000) * 1000000)).build();
         }
 
-        Entities.Book.Builder bookBuilder = Entities.Book.newBuilder().setPrice(book.getPrice()).setIsbn(book.getIsbn()).setDescription(book.getDescription()).setTitle(book.getTitle()).setStockQuantity(book.getStockQuantity());
+        Entities.Book.Builder bookBuilder = Entities.Book.newBuilder();
 
         if (book.getBook_id() != null) {
             bookBuilder.setBookId(book.getBook_id());
+        }
+
+        if (book.getPrice() != null) {
+            bookBuilder.setPrice(book.getPrice());
+        }
+
+        if (book.getIsbn() != null) {
+            bookBuilder.setIsbn(book.getIsbn());
+        }
+
+        if (book.getDescription() != null) {
+            bookBuilder.setDescription(book.getDescription());
+        }
+
+        if (book.getTitle() != null) {
+            bookBuilder.setTitle(book.getTitle());
+        }
+
+        if (book.getStockQuantity() != null) {
+            bookBuilder.setStockQuantity(book.getStockQuantity());
         }
 
         if (book.getAvatar_url() != null) {
@@ -50,4 +70,5 @@ public class DtoToGrpcConverter {
 
         return bookBuilder.build();
     }
+
 }
