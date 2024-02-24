@@ -178,6 +178,55 @@ Here is an example of the JSON request body for updating a book:
 }
 ```
 
+## Category
+### Create a Category
+
+- **POST** `/categories`
+- Creates a new book category with an optional list of books.
+
+**Request Body**
+
+```json
+{
+  "name": "Fiction",
+  "description": "A category for all fiction books",
+  "books": [
+    {
+      "book_id": 1
+    }
+  ]
+}
+```
+
+### List All Categories
+
+- **GET** `/categories`
+- Retrieves a list of all book categories.
+
+### Get Books in a Category
+
+- **GET** `/categories/{category_id}/books`
+- Retrieves a list of books within a specified category.
+
+### Update a Category
+
+- **PUT** `/categories/{category_id}`
+- Updates the specified book category.
+
+**Request Body**
+
+```json
+{
+  "name": "Non-Fiction",
+  "description": "Updated description for the category"
+}
+```
+
+### Delete a Category
+
+- **DELETE** `/categories/{category_id}`
+- Deletes the specified book category.
+
 ## Configuration
 
 Application configurations are located in `src/main/resources/application.properties`.  
