@@ -53,7 +53,7 @@ public class AuthorService {
         AuthorDto authorDto = AuthorEntityToAuthorDto(response.getAuthor());
         List<BookDto> bookDtoList = response.getBooksList().stream().map(GrpcToDtoConverter::BookGrpcToBookDto).toList();
 
-        return AuthorsBooksDto.builder().authorDto(authorDto).books(bookDtoList).build();
+        return AuthorsBooksDto.builder().author(authorDto).books(bookDtoList).build();
     }
 
     public AuthorDto updateAuthorAvatarById(Long id, String avatar_url) {

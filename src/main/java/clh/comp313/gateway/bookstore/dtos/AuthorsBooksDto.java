@@ -10,6 +10,6 @@ import java.util.List;
 @Setter
 @Builder
 public class AuthorsBooksDto {
-    private AuthorDto authorDto;
+    private AuthorDto author;
     private List<BookDto> books;
 }
