@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class AuthorDto {
     private Long author_id;
-    private char[] name;
+    private String name;
     private String biography;
     private String avatar_url;
 }

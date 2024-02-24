@@ -17,7 +17,7 @@ public class DtoToGrpcConverter {
         }
 
         return builder
-                .setName(Arrays.toString(authorDto.getName()))
+                .setName(authorDto.getName())
                 .setBiography(authorDto.getBiography())
                 .setAvatarUrl(authorDto.getAvatar_url())
                 .build();

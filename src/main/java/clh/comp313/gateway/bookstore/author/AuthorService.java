@@ -39,7 +39,7 @@ public class AuthorService {
 
         List<AuthorDto> authorDtoList = new ArrayList<>();
         for (Entities.AuthorEntity resp : allAuthors) {
-            AuthorDto authorDto = new AuthorDto(resp.getAuthorId(), resp.getName().toCharArray(), resp.getBiography(), resp.getAvatarUrl());
+            AuthorDto authorDto = new AuthorDto(resp.getAuthorId(), resp.getName(), resp.getBiography(), resp.getAvatarUrl());
             authorDtoList.add(authorDto);
         }
 
